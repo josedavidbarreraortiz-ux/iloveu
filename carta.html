@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Feliz Día de la Mujer 🌹</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0c0514;
+            --rose: #c9466b;
+            --pink: #e8849a;
+            --gold: #d4a574;
+            --warm: #3e2723;
+            --paper: #fdfaf5;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ══════════════════════════
+           SCENE 1: ENVELOPE
+        ══════════════════════════ */
+        #scene-envelope {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            min-height: 100dvh;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            background: radial-gradient(ellipse at 50% 40%, #1e0f30 0%, var(--bg) 70%);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        #scene-envelope.hiding {
+            opacity: 0;
+            transform: scale(0.92);
+            pointer-events: none;
+        }
+
+        #scene-envelope.hidden {
+            display: none;
+        }
+
+        /* Soft ambient glow behind envelope */
+        .ambient-glow {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201, 70, 107, 0.12), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        /* Envelope wrapper */
+        .envelope-wrapper {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 22px;
+            position: relative;
+            z-index: 5;
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.3s ease;
+        }
+
+        .envelope-wrapper:active {
+            transform: scale(0.97);
+        }
+
+        .envelope-title {
+            font-family: 'Great Vibes', cursive;
+            color: var(--pink);
+            font-size: clamp(1.5rem, 5vw, 2.3rem);
+            text-shadow: 0 0 25px rgba(201, 70, 107, 0.3);
+        }
+
+        .envelope-box {
+            position: relative;
+            width: clamp(250px, 72vw, 340px);
+            height: clamp(165px, 46vw, 220px);
+        }
+
+        .env-body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 78%;
+            background: linear-gradient(160deg, #f0ddd0, #e2cbb8, #d4b9a4);
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 12px 45px rgba(0, 0, 0, 0.45), inset 0 -2px 6px rgba(0, 0, 0, 0.06);
+            z-index: 3;
+        }
+
+        .env-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 55%;
+            z-index: 4;
+            transform-origin: top center;
+            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .env-flap-inner {
+            width: 0;
+            height: 0;
+            border-left: calc(clamp(250px, 72vw, 340px) / 2) solid transparent;
+            border-right: calc(clamp(250px, 72vw, 340px) / 2) solid transparent;
+            border-top: calc(clamp(165px, 46vw, 220px) * 0.55) solid #ccb09b;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .envelope-wrapper.opened .env-flap {
+            transform: rotateX(180deg);
+        }
+
+        .env-paper {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 78%;
+            height: 50%;
+            background: linear-gradient(180deg, #fffdf7, #fef8ee);
+            border-radius: 5px 5px 0 0;
+            z-index: 2;
+            transition: transform 0.8s 0.3s ease;
+            box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .env-paper span {
+            font-family: 'Great Vibes', cursive;
+            color: var(--rose);
+            font-size: clamp(0.8rem, 2.8vw, 1rem);
+        }
+
+        .envelope-wrapper.opened .env-paper {
+            transform: translateX(-50%) translateY(-80%);
+        }
+
+        .wax-seal {
+            position: absolute;
+            width: clamp(42px, 11vw, 54px);
+            height: clamp(42px, 11vw, 54px);
+            background: radial-gradient(circle at 38% 35%, #d44, #8b1a1a);
+            border-radius: 50%;
+            bottom: 22%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(16px, 4.5vw, 24px);
+            color: rgba(255, 220, 220, 0.85);
+            box-shadow: 0 3px 12px rgba(139, 26, 26, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.12);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .envelope-wrapper.opened .wax-seal {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.4);
+        }
+
+        .tap-hint {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: clamp(0.75rem, 2.2vw, 0.88rem);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* ══════════════════════════
+           SCENE 2: LETTER
+        ══════════════════════════ */
+        #scene-letter {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            min-height: 100dvh;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(180deg, #0f0820 0%, #18102c 40%, #0f0820 100%);
+            padding: 0;
+        }
+
+        #scene-letter.visible {
+            display: flex;
+        }
+
+        /* Header */
+        .letter-header {
+            width: 100%;
+            text-align: center;
+            padding: clamp(35px, 8vw, 65px) 20px clamp(16px, 4vw, 30px);
+        }
+
+        .letter-header h1 {
+            font-family: 'Great Vibes', cursive;
+            color: var(--pink);
+            font-size: clamp(2rem, 7vw, 3.2rem);
+            font-weight: 400;
+            text-shadow: 0 0 35px rgba(201, 70, 107, 0.25);
+            margin-bottom: 10px;
+        }
+
+        .divider-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            color: var(--gold);
+            font-size: 0.8rem;
+            opacity: 0.45;
+        }
+
+        .divider-line::before,
+        .divider-line::after {
+            content: '';
+            width: clamp(25px, 8vw, 70px);
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        /* ── Letter card ── */
+        .letter-card {
+            width: clamp(300px, 90vw, 660px);
+            background: var(--paper);
+            border-radius: 6px;
+            padding: clamp(30px, 6vw, 55px) clamp(24px, 5.5vw, 48px);
+            position: relative;
+            box-shadow:
+                0 2px 0 rgba(215, 195, 170, 0.4),
+                0 4px 0 rgba(200, 180, 155, 0.2),
+                0 25px 60px rgba(0, 0, 0, 0.45),
+                0 0 80px rgba(201, 70, 107, 0.04);
+            margin-bottom: clamp(25px, 6vw, 50px);
+        }
+
+        /* Decorative border inside */
+        .letter-card::after {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid rgba(201, 70, 107, 0.08);
+            border-radius: 3px;
+            pointer-events: none;
+        }
+
+        .letter-date {
+            text-align: right;
+            font-size: clamp(0.75rem, 2.4vw, 0.85rem);
+            color: #b09585;
+            font-style: italic;
+            margin-bottom: clamp(16px, 4vw, 28px);
+        }
+
+        .letter-saludo {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(1.5rem, 5vw, 2.2rem);
+            color: var(--rose);
+            text-align: center;
+            margin-bottom: clamp(20px, 5vw, 32px);
+        }
+
+        /* Decorative flourish under greeting */
+        .flourish {
+            display: block;
+            text-align: center;
+            color: var(--rose);
+            opacity: 0.25;
+            font-size: 1.3rem;
+            margin-top: -8px;
+            margin-bottom: clamp(18px, 4.5vw, 28px);
+            letter-spacing: 6px;
+        }
+
+        .letter-card p {
+            color: var(--warm);
+            font-size: clamp(0.93rem, 2.8vw, 1.06rem);
+            font-weight: 400;
+            line-height: 1.9;
+            margin-bottom: clamp(15px, 3.5vw, 22px);
+            text-align: justify;
+            text-indent: 1.8em;
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+            word-break: break-word;
+            hyphens: auto;
+        }
+
+        .letter-card p.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .letter-closing {
+            text-align: center;
+            margin-top: clamp(22px, 5vw, 38px);
+            padding-top: clamp(18px, 4vw, 28px);
+            border-top: 1px solid rgba(201, 70, 107, 0.1);
+        }
+
+        .letter-closing span {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(1.3rem, 4vw, 1.6rem);
+            color: var(--rose);
+        }
+
+        /* ══════════════════════════
+           ROSE + BLACK HEART
+        ══════════════════════════ */
+        .rose-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: clamp(15px, 4vw, 30px) 0 clamp(50px, 10vw, 80px);
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+
+        .rose-section.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .rose-svg {
+            width: clamp(110px, 30vw, 160px);
+            height: clamp(140px, 40vw, 210px);
+            filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.35));
+        }
+
+        .rose-text {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+            color: var(--pink);
+            margin-top: 14px;
+            opacity: 0.75;
+        }
+
+        /* ── Floating petals (soft, no blink) ── */
+        .petal-float {
+            position: fixed;
+            border-radius: 50% 0 50% 50%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+            animation: drift linear infinite;
+        }
+
+        @keyframes drift {
+            0% {
+                transform: translateY(105vh) rotate(0deg);
+            }
+
+            100% {
+                transform: translateY(-5vh) rotate(400deg);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01s !important;
+                transition-duration: 0.01s !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Soft floating petals -->
+    <div id="petals"></div>
+
+    <!-- ═══ SCENE 1 — ENVELOPE ═══ -->
+    <div id="scene-envelope">
+        <div class="ambient-glow"></div>
+        <div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+            <div class="envelope-title">Para la persona mas especial del mundo…</div>
+            <div class="envelope-box">
+                <div class="env-flap">
+                    <div class="env-flap-inner"></div>
+                </div>
+                <div class="env-paper"><span>Para ti, mi niña hermosa 🖤</span></div>
+                <div class="env-body"></div>
+                <div class="wax-seal">♡</div>
+            </div>
+            <div class="tap-hint">toca para abrir</div>
+        </div>
+    </div>
+
+    <!-- ═══ SCENE 2 — LETTER ═══ -->
+    <div id="scene-letter">
+        <div class="letter-header">
+            <h1>Feliz Día de la Mujer</h1>
+            <div class="divider-line">✦ 8 de marzo ✦</div>
+        </div>
+
+        <div class="letter-card">
+            <div class="letter-date">8 de marzo de 2026</div>
+            <div class="letter-saludo">Para ti, mi niña…</div>
+            <div class="flourish">─ ♡ ─</div>
+
+            <p>Hoy es el día de la mujer, mi niña… y aunque sé que un solo día no alcanza para reconocer todo lo que una
+                mujer puede ser, igual quería aprovecharlo para decirte algo que de verdad siento.</p>
+
+            <p>A veces siento que tú misma no alcanzas a ver lo grande que eres. Eres una mujer fuerte, mucho más de lo
+                que crees. Incluso cuando tu mente se llena de dudas, cuando sobrepiensas o cuando algo te pesa por
+                dentro, sigues adelante. Y eso también es fuerza. La verdadera fuerza no siempre es verse invencible,
+                muchas veces es simplemente seguir respirando, seguir pensando, seguir intentando aun cuando el cuerpo y mente
+                está un poco cansado.</p>
+
+            <p>Tu forma de sentir las cosas, tu forma de pensar, incluso tus dudas… todo eso dice mucho de quién eres.
+                No eres alguien vacío ni superficial, eres alguien con profundidad, con una mente que piensa mucho y con
+                un corazón que siente mucho. Y aunque a veces eso mismo te haga sobrepensar o cuestionarte, también es
+                parte de lo que te hace tan especial.</p>
+
+            <p>Ser mujer no es algo pequeño, princesa. Es tener una fortaleza enorme, una sensibilidad que muchas veces
+                el mundo no entiende, y aun así seguir siendo capaz de querer, de cuidar y de seguir adelante. Y tú
+                tienes todo eso dentro de ti.</p>
+
+            <p>Quiero que recuerdes siempre algo, incluso en los días donde tu mente te diga lo contrario: eres valiosa,
+                eres fuerte y eres más capaz de lo que imaginas. No necesitas demostrarle nada a nadie para ser grande,
+                porque ya lo eres.</p>
+
+            <p>Para mí eres alguien muy especial, mi niña. Y pase lo que pase, en los momentos buenos o en los peores momentos, quiero que sepas que siempre vas a tener mi apoyo. Siempre voy a querer
+                verte bien, verte tranquila y verte creyendo en ti misma.</p>
+
+            <p>Feliz día de la mujer, te amo mucho mi niña 🖤</p>
+
+            <div class="letter-closing">
+                <span>Con todo mi amor, siempre 🖤</span>
+            </div>
+        </div>
+
+        <!-- Rose with Black Heart -->
+        <div class="rose-section" id="roseSection">
+            <svg class="rose-svg" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg">
+                <!-- Black Heart -->
+                <path
+                    d="M100 240 C100 240,20 180,20 125 C20 90,48 65,75 65 C90 65,100 78,100 78 C100 78,110 65,125 65 C152 65,180 90,180 125 C180 180,100 240,100 240Z"
+                    fill="#1a1a1a" stroke="#333" stroke-width="1.5" />
+                <ellipse cx="75" cy="102" rx="16" ry="20" fill="rgba(255,255,255,0.035)"
+                    transform="rotate(-18 75 102)" />
+
+                <!-- Stem -->
+                <path d="M100 82 C99 65 99 45 100 28" fill="none" stroke="#2a6b1a" stroke-width="3.5"
+                    stroke-linecap="round" />
+                <path d="M100 62 L94 57" fill="none" stroke="#2a6b1a" stroke-width="2" stroke-linecap="round" />
+                <path d="M100 48 L106 43" fill="none" stroke="#2a6b1a" stroke-width="2" stroke-linecap="round" />
+
+                <!-- Leaves -->
+                <path d="M94 57 Q80 48 72 55 Q82 44 94 57Z" fill="#358a28" />
+                <path d="M106 43 Q120 34 128 40 Q118 32 106 43Z" fill="#358a28" />
+
+                <!-- Rose petals layered -->
+                <ellipse cx="100" cy="24" rx="22" ry="19" fill="#7a0020" transform="rotate(-6 100 24)" />
+                <ellipse cx="87" cy="27" rx="17" ry="16" fill="#8b0028" transform="rotate(15 87 27)" />
+                <ellipse cx="113" cy="27" rx="17" ry="16" fill="#8b0028" transform="rotate(-15 113 27)" />
+                <ellipse cx="94" cy="20" rx="14" ry="14" fill="#a01030" transform="rotate(6 94 20)" />
+                <ellipse cx="106" cy="20" rx="14" ry="14" fill="#a01030" transform="rotate(-6 106 20)" />
+                <ellipse cx="100" cy="16" rx="12" ry="13" fill="#b82040" />
+                <ellipse cx="97" cy="13" rx="9" ry="10" fill="#cc2848" transform="rotate(4 97 13)" />
+                <ellipse cx="103" cy="13" rx="9" ry="10" fill="#cc2848" transform="rotate(-4 103 13)" />
+                <ellipse cx="100" cy="10" rx="6" ry="8" fill="#d93858" />
+                <ellipse cx="100" cy="8" rx="3.5" ry="5" fill="#e84868" />
+                <circle cx="100" cy="7" r="2" fill="#7a0020" opacity="0.5" />
+                <!-- Shimmer -->
+                <ellipse cx="94" cy="12" rx="3" ry="5.5" fill="rgba(255,255,255,0.07)" transform="rotate(-10 94 12)" />
+
+                <!-- Dew drops -->
+                <circle cx="84" cy="31" r="2" fill="rgba(255,255,255,0.22)" />
+                <circle cx="84.7" cy="30.3" r="0.8" fill="rgba(255,255,255,0.45)" />
+                <circle cx="116" cy="24" r="1.6" fill="rgba(255,255,255,0.18)" />
+                <circle cx="116.4" cy="23.4" r="0.6" fill="rgba(255,255,255,0.4)" />
+            </svg>
+            <div class="rose-text">Para ti, princesa 🖤</div>
+        </div>
+    </div>
+
+    <script>
+        // Soft floating petals (no blinking)
+        (function () {
+            const c = document.getElementById('petals');
+            for (let i = 0; i < 12; i++) {
+                const p = document.createElement('div');
+                p.className = 'petal-float';
+                const size = 5 + Math.random() * 8;
+                const hue = 335 + Math.random() * 20;
+                p.style.cssText = `
+                    left: ${Math.random() * 100}vw;
+                    width: ${size}px;
+                    height: ${size}px;
+                    background: hsl(${hue}, 60%, 55%);
+                    animation-duration: ${10 + Math.random() * 10}s;
+                    animation-delay: ${Math.random() * 15}s;
+                `;
+                c.appendChild(p);
+            }
+        })();
+
+        // Open envelope
+        let opened = false;
+        function openEnvelope() {
+            if (opened) return;
+            opened = true;
+
+            const wrapper = document.getElementById('envelopeWrapper');
+            const sceneEnv = document.getElementById('scene-envelope');
+            const sceneLetter = document.getElementById('scene-letter');
+
+            wrapper.classList.add('opened');
+
+            setTimeout(() => sceneEnv.classList.add('hiding'), 1100);
+
+            setTimeout(() => {
+                sceneEnv.classList.add('hidden');
+                sceneLetter.classList.add('visible');
+                document.body.style.overflow = 'auto';
+                document.body.style.overflowX = 'hidden';
+                revealContent();
+            }, 2100);
+        }
+
+        function revealContent() {
+            const paragraphs = document.querySelectorAll('.letter-card p');
+            const rose = document.getElementById('roseSection');
+
+            const obs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('show');
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -20px 0px' });
+
+            paragraphs.forEach((p, i) => {
+                setTimeout(() => obs.observe(p), 150 + i * 120);
+            });
+
+            const roseObs = new IntersectionObserver(entries => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('show');
+                        roseObs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.25 });
+
+            roseObs.observe(rose);
+        }
+    </script>
+</body>
+
+</html>
